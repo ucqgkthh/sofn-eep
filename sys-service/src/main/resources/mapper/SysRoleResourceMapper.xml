@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRoleResourceMapper" >
+
+    <insert id="batchSaveSysRoleResource" parameterType="java.util.Map">
+        INSERT INTO "HBZZ"."SYS_ROLE_RESOURCE" (
+        "ID",
+        "ROLE_ID",
+        "RESOURCE_ID" )
+        <foreach collection="sysRoleResources" separator="UNION ALL" open="(" close=")" item="sysRoleResource">
+            select
+            #{sysRoleResource.id},
+            #{sysRoleResource.roleId},
+            #{sysRoleResource.resourceId}
+            from dual
+        </foreach>
+    </insert>
+
+    <delete id="dropRoleResourcesByRoleId" parameterType="java.lang.String">
+        delete from SYS_ROLE_RESOURCE where role_id = #{roleId}
+    </delete>
+
+</mapper>

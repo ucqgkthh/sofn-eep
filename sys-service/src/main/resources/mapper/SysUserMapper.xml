@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysUserMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysUser" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="NICKNAME" property="nickname" jdbcType="VARCHAR" />
+        <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+        <result column="USERNAME" property="username" jdbcType="VARCHAR" />
+        <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+        <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+        <result column="ORGANIZATION_ID" property="organizationId" jdbcType="VARCHAR" />
+        <result column="SALT" property="salt" jdbcType="VARCHAR" />
+        <result column="INIT_PASSWORD" property="initPassword" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      ID, NICKNAME, PASSWORD, USERNAME, MOBILE, EMAIL, STATUS, CREATE_USER_ID, CREATE_TIME,
+      UPDATE_USER_ID, UPDATE_TIME, DEL_FLAG, ORGANIZATION_ID, SALT
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="customResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from SYS_USER
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.sofn.sys.model.SysUser" >
+        insert into SYS_USER
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="nickname != null" >
+                NICKNAME,
+            </if>
+            <if test="password != null" >
+                PASSWORD,
+            </if>
+            <if test="initPassword != null" >
+                INIT_PASSWORD,
+            </if>
+            <if test="username != null" >
+                USERNAME,
+            </if>
+            <if test="mobile != null" >
+                MOBILE,
+            </if>
+            <if test="email != null" >
+                EMAIL,
+            </if>
+            <if test="status != null" >
+                STATUS,
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG,
+            </if>
+            <if test="organizationId != null" >
+                ORGANIZATION_ID,
+            </if>
+            <if test="salt != null" >
+                SALT,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="nickname != null" >
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="initPassword != null" >
+                #{initPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null" >
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null" >
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateUserId != null" >
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationId != null" >
+                #{organizationId,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                #{salt,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sofn.sys.model.SysUser" >
+        update SYS_USER
+        <set >
+            <if test="nickname != null" >
+                NICKNAME = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null" >
+                PASSWORD = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="username != null" >
+                USERNAME = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null" >
+                MOBILE = #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null" >
+                EMAIL = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null" >
+                STATUS = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="organizationId != null" >
+                ORGANIZATION_ID = #{organizationId,jdbcType=VARCHAR},
+            </if>
+            <if test="salt != null" >
+                SALT = #{salt,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getSysUserByCondition" parameterType="java.util.Map" resultType="com.sofn.sys.model.SysUser">
+        select
+        ID                           id,
+        NICKNAME                     nickname,
+        PASSWORD                     password,
+        INIT_PASSWORD                initPassword,
+        USERNAME                     username,
+        MOBILE                       moboile,
+        EMAIL                        email,
+        STATUS                       status,
+        CREATE_USER_ID               createUserId,
+        CREATE_TIME                  createTime,
+        UPDATE_USER_ID               updateUserId,
+        UPDATE_TIME                  updateTime,
+        DEL_FLAG                     delFlag,
+        ORGANIZATION_ID              organizationId,
+        SALT                         salt
+        from sys_user
+        <where>
+            DEL_FLAG!='Y'
+            <if test="nickname != null and nickname != ''">
+                and NICKNAME like '%' || #{nickname} || '%'
+            </if>
+
+            <if test="username != null and username != ''">
+                and USERNAME like '%' || #{username} || '%'
+            </if>
+
+            <if test="status != null and status != ''">
+                and status = #{status}
+            </if>
+
+            <if test="moboile != null and moboile != ''">
+                and MOBILE like '%' || #{moboile} || '%'
+            </if>
+
+            <if test="email != null and email != ''">
+                and EMAIL like '%' || #{email} || '%'
+            </if>
+        </where>
+
+        order by CREATE_TIME desc
+    </select>
+
+    <insert id="batchSave">
+        insert into sys_user (
+        "ID",
+        "NICKNAME",
+        "PASSWORD",
+        "INIT_PASSWORD",
+        "USERNAME",
+        "MOBOILE",
+        "EMAIL",
+        "STATUS",
+        "CREATE_USER_ID",
+        "CREATE_TIME",
+        "UPDATE_USER_ID",
+        "UPDATE_TIME",
+        "DEL_FLAG",
+        "ORGANIZATION_ID",
+        "SALT"
+        )
+        <foreach collection="sysUsers" item="sysUser" separator="UNION ALL" open="(" close=")">
+            select
+            #{sysUser.id},
+            #{sysUser.nickname},
+            #{sysUser.password},
+            #{sysUser.initPassword},
+            #{sysUser.username},
+            #{sysUser.roleIds},
+            #{sysUser.moboile},
+            #{sysUser.email},
+            #{sysUser.status},
+            #{sysUser.createUserId},
+            #{sysUser.createTime},
+            #{sysUser.updateUserId},
+            #{sysUser.updateTime},
+            #{sysUser.delFlag},
+            #{sysUser.organizationId},
+            #{sysUser.salt}
+            from  dual
+        </foreach>
+    </insert>
+
+</mapper>

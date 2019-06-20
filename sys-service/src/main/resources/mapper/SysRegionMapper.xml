@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRegionMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRegion">
+        <result column="ID" property="id"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="REGION_NAME" property="regionName"></result>
+        <result column="REGION_CODE" property="regionCode"></result>
+        <result column="REGION_PINYIN" property="regionPinyin"></result>
+        <result column="REGION_TYPE" property="regionType"></result>
+        <result column="REGION_FULLNAME" property="regionFullname"></result>
+        <result column="SORTID" property="sortid"></result>
+        <result column="REMARK" property="remark"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="STATUS" property="status"></result>
+    </resultMap>
+    <delete id="batchDelete" parameterType="java.util.Map">
+        update SYS_REGION  set del_flag = 'Y',UPDATE_USER_ID= #{updateUserId},UPDATE_TIME = #{updateTime} where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </delete>
+
+    <select id="getSysRegionByNameOrRegionCode" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_REGION a where 1 =1
+        <if test="regionCode != null and regionCode != ''">
+            and REGION_CODE = #{regionCode}
+        </if>
+
+        <if test="name != null and name != ''">
+            and REGION_NAME = #{name}
+        </if>
+
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+        and DEL_FLAG = 'N'
+
+    </select>
+    
+    
+    <select id="getSysRegionByContion" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            REGION_NAME             ,
+            REGION_CODE             ,
+            REGION_PINYIN           ,
+            REGION_TYPE             ,
+            REGION_FULLNAME         ,
+            SORTID                  ,
+            REMARK                  ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG                ,
+            RESERVED_FIELD1         ,
+            RESERVED_FIELD2         ,
+            STATUS
+        FROM SYS_REGION
+        <where>
+            <if test="regionName != null and regionName != ''">
+                and REGION_NAME like '%' || #{regionName} || '%'
+            </if>
+            <if test="regionCode != null and regionCode != ''">
+                and REGION_CODE like '%' || #{regionCode} || '%'
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+            <if test="status != null and status != ''">
+                and STATUS= #{status}
+            </if>
+            <if test="parentId != null and parentId != ''">
+                and PARENT_ID = #{parentId}
+            </if>
+        </where>
+    </select>
+
+</mapper>

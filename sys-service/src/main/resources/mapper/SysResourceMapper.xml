@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysResourceMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysResource">
+        <result column="ID" property="id"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="RESOURCE_NAME" property="resourceName"></result>
+        <result column="TYPE" property="type"></result>
+        <result column="RESOURCE_NO" property="resourceNo"></result>
+        <result column="PARENT_IDS" property="parentIds"></result>
+        <result column="PERMISSION" property="permission"></result>
+        <result column="ICON" property="icon"></result>
+        <result column="LEAF" property="leaf"></result>
+        <result column="RESOURCE_URL" property="resourceUrl"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="PRIORITY" property="priority"></result>
+        <result column="SUBSYSTEM_ID" property="subsystemId"></result>
+        <result column="UPDATE_TIME" property="updateTime"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="UPDATE_USER_ID" property="updateUserId"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+    </resultMap>
+
+    <select id="getSysResourceByNameOrUrl" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_RESOURCE a where 1 =1
+        <if test="name != null and name != ''">
+            and RESOURCE_NAME = #{name}
+        </if>
+
+        <if test="url != null and url != ''">
+            and RESOURCE_URL = #{url}
+        </if>
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+        and DEL_FLAG = 'N'
+    </select>
+
+    <select id="getSonSysResource" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            RESOURCE_NAME           ,
+            RESOURCE_URL            ,
+            PERMISSION              ,
+            TYPE                    ,
+            RESOURCE_NO             ,
+            LEAF                    ,
+            PRIORITY                ,
+            ICON                    ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG                ,
+            PARENT_IDS              ,
+            SUBSYSTEM_ID
+        FROM SYS_RESOURCE where PARENT_ID = #{parentId}
+    </select>
+    <select id="selectResourceListByPriority" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            RESOURCE_NAME           ,
+            RESOURCE_URL            ,
+            PERMISSION              ,
+            TYPE                    ,
+            LEAF                    ,
+            PRIORITY                ,
+            ICON                    ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            RESOURCE_NO             ,
+            DEL_FLAG                ,
+            PARENT_IDS              ,
+            SUBSYSTEM_ID
+        FROM SYS_RESOURCE where DEL_FLAG = #{delFlag} order by PRIORITY
+    </select>
+
+    
+    <select id="getSysResourceByContion" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            RESOURCE_NAME           ,
+            RESOURCE_URL            ,
+            PERMISSION              ,
+            RESOURCE_NO             ,
+            TYPE                    ,
+            LEAF                    ,
+            PRIORITY                ,
+            ICON                    ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG                ,
+            PARENT_IDS              ,
+            SUBSYSTEM_ID
+        FROM SYS_RESOURCE
+        <where>  1=1
+            <if test="resourceName != null and resourceName != ''">
+                and RESOURCE_NAME like '%' || #{name} || '%'
+            </if>
+            <if test="resourceNo != null and resourceNo != ''">
+                and RESOURCE_NO like '%' || #{resourceNo} || '%'
+            </if>
+            <if test="resourceUrl != null and resourceUrl != ''">
+                and RESOURCE_URL =  #{resourceUrl}
+            </if>
+        </where>
+        and DEL_FLAG= 'N'
+    </select>
+
+
+    <select id="getAllResourceBySubsystemId" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            RESOURCE_NAME           ,
+            RESOURCE_URL            ,
+            PERMISSION              ,
+            TYPE                    ,
+            RESOURCE_NO             ,
+            LEAF                    ,
+            PRIORITY                ,
+            ICON                    ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG                ,
+            PARENT_IDS              ,
+            SUBSYSTEM_ID
+        FROM SYS_RESOURCE where SUBSYSTEM_ID = #{SUBSYSTEM_ID}
+    </select>
+    <select id="getAllResource" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            RESOURCE_NAME           ,
+            RESOURCE_URL            ,
+            PERMISSION              ,
+            TYPE                    ,
+            RESOURCE_NO             ,
+            LEAF                    ,
+            PRIORITY                ,
+            ICON                    ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG                ,
+            PARENT_IDS              ,
+            SUBSYSTEM_ID
+        FROM SYS_RESOURCE where DEL_FLAG='N'
+    </select>
+    <select id="getAllResourceByRoleId" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            RESOURCE_NAME           ,
+            RESOURCE_URL            ,
+            PERMISSION              ,
+            TYPE                    ,
+            RESOURCE_NO             ,
+            LEAF                    ,
+            PRIORITY                ,
+            ICON                    ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG                ,
+            PARENT_IDS              ,
+            SUBSYSTEM_ID
+        FROM SYS_RESOURCE where ID in (select rs.RESOURCE_ID from
+        SYS_ROLE_RESOURCE rs where rs.ROLE_ID=#{roleId})
+    </select>
+
+</mapper>

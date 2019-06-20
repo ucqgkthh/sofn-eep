@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysUserRoleMapper" >
+
+    <insert id="batchSaveSysUserRole" parameterType="java.util.Map">
+        INSERT INTO "HBZZ"."SYS_USER_ROLE" (
+        "ID",
+        "USER_ID",
+        "ROLE_ID" )
+        <foreach collection="sysUserRoles" separator="UNION ALL" open="(" close=")" item="sysUserRole">
+            select
+            #{sysUserRole.id},
+            #{sysUserRole.userId},
+            #{sysUserRole.roleId}
+            from dual
+        </foreach>
+    </insert>
+
+    <delete id="dropUserRolesByUserId" parameterType="java.lang.String">
+        delete from SYS_USER_ROLE where user_id = #{userId}
+    </delete>
+
+    <select id="getUserCountOfRole" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_USER_ROLE
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+</mapper>

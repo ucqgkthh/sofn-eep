@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysSubsystemMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysSubsystem">
+        <result column="ID" property="id"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="SUBSYSTEM_NAME" property="subsystemName"></result>
+        <result column="APP_ID" property="appId"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="UPDATE_TIME" property="updateTime"></result>
+        <result column="CREATE_TIME" property="createTime"></result>
+        <result column="UPDATE_USER_ID" property="updateUserId"></result>
+        <result column="CREATE_USER_ID" property="createUserId"></result>
+
+        <result column="DESCRIPTION" property="description"></result>
+    </resultMap>
+
+    <select id="getSysSubsystemByNameOrAppId" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_SUBSYSTEM a where 1 =1
+        <if test="name != null and name != ''">
+            and SUBSYSTEM_NAME = #{name}
+        </if>
+
+        <if test="appId != null and appId != ''">
+            and APP_ID = #{appId}
+        </if>
+
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+        and DEL_FLAG = 'N'
+
+    </select>
+
+    <select id="getSonSysSubsystem" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            SUBSYSTEM_NAME             ,
+            APP_ID             ,
+            DESCRIPTION         ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG
+        FROM SYS_SUBSYSTEM where PARENT_ID = #{parentId} and  DEL_FLAG = 'N'
+    </select>
+
+
+    <select id="getAllSysSubsystem"  resultMap="customResultMap">
+        SELECT
+        ID						,
+        PARENT_ID               ,
+        SUBSYSTEM_NAME             ,
+        APP_ID             ,
+        DESCRIPTION         ,
+        CREATE_USER_ID          ,
+        CREATE_TIME             ,
+        UPDATE_USER_ID          ,
+        UPDATE_TIME             ,
+        DEL_FLAG
+        FROM SYS_SUBSYSTEM
+        where DEL_FLAG='N'
+    </select>
+
+    <select id="getSysSubsystemByContion" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+            ID						,
+            PARENT_ID               ,
+            SUBSYSTEM_NAME             ,
+            APP_ID             ,
+            DESCRIPTION         ,
+            CREATE_USER_ID          ,
+            CREATE_TIME             ,
+            UPDATE_USER_ID          ,
+            UPDATE_TIME             ,
+            DEL_FLAG
+        FROM SYS_SUBSYSTEM
+        <where>
+            <if test="subsystemName != null and subsystemName != ''">
+                and SUBSYSTEM_NAME like '%' || #{subsystemName} || '%'
+            </if>
+            <if test="appId != null and appId != ''">
+                and APP_ID like '%' || #{appId} || '%'
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+            and DEL_FLAG = 'N'
+        </where>
+    </select>
+
+</mapper>

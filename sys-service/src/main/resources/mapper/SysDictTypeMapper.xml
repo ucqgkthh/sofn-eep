@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysDictTypeMapper" >
+    <resultMap id="BaseResultMap" type="com.sofn.sys.model.SysDictType" >
+        <id column="ID" jdbcType="VARCHAR" property="id" />
+        <result column="DICTNAME" jdbcType="VARCHAR" property="dictName" />
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="UPDATE_USER_ID" jdbcType="VARCHAR" property="updateUserId" />
+        <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="DEL_FLAG" jdbcType="VARCHAR" property="delFlag" />
+        <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+        <result column="ENABLE" jdbcType="VARCHAR" property="enable" />
+    </resultMap>
+    <select id="getDictTypeByName"  resultType="com.sofn.sys.model.SysDictType">
+        <bind name="pattern" value="'%' + _parameter + '%'" />
+        select id,dictname,create_user_id,create_time,update_user_id,update_time,del_flag,remark,enable from SYS_DICT_TYPE WHERE
+                DICTNAME LIKE #{pattern}
+    </select>
+    <insert id="saveDictType">
+        insert into SYS_DICT_TYPE (ID,DICTNAME,CREATE_USER_ID,CREATE_TIME,UPDATE_USER_ID,UPDATE_TIME,DEL_FLAG,REMARK,ENABLE)
+        values (#{id,jdbcType=VARCHAR},#{dictName,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+          #{updateUserId,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP},#{delFlag,jdbcType=VARCHAR},#{enable,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR})
+    </insert>
+    <delete id="delDictType">
+            DELETE FROM SYS_DICT_TYPE WHERE ID = #{id}
+    </delete>
+    <update id="updateDictType">
+            update SYS_DICT_TYPE
+                    set DICTNAME = #{dictname}
+                    WHERE ID = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysOrganizationMapper" >
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysOrganization">
+        <result column="ID" property="id"></result>
+        <result column="ORGANIZATION_NAME" property="organizationName"></result>
+        <result column="PARENT_IDS" property="parentIds"></result>
+        <result column="PARENT_ID" property="parentId"></result>
+        <result column="DEL_FLAG" property="delFlag"></result>
+        <result column="LEAF" property="leaf"></result>
+        <result column="PRIORITY" property="priority"></result>
+    </resultMap>
+
+    <select id="getSysOrganizationByName" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ORGANIZATION a where 1 =1
+        <if test="orgname != null and orgname != ''">
+            and ORGANIZATION_NAME = #{orgname}
+        </if>
+
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+
+    </select>
+
+    <select id="getUserOfOrganization" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ORGANIZATION a where 1 =1
+        <if test="id != null and id != ''">
+            and PARENT_ID = #{id}
+        </if>
+
+    </select>
+
+    <select id="selectOrganizationListByPriority" parameterType="java.lang.String" resultMap="customResultMap">
+        SELECT
+            ID						,
+            ORGANIZATION_NAME       ,
+            PARENT_IDS              ,
+            PARENT_ID               ,
+            DEL_FLAG                ,
+            LEAF                    ,
+            PRIORITY
+        FROM SYS_ORGANIZATION where DEL_FLAG = #{delFlag} order by PRIORITY
+    </select>
+    <update id="updateSalefParentIds" parameterType="java.lang.String">
+    update SYS_ORGANIZATION set PARENT_IDS=concat(#{makeSelfAsParentIds}, substring(PARENT_IDS, length(#{makeSelfAsParentIds}))) where PARENT_IDS like #{makeSelfAsParentIds} + '%'
+  </update>
+    
+    <select id="getSysOrganizationByContion" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+            ID						,
+            ORGANIZATION_NAME       ,
+            PARENT_IDS              ,
+            PARENT_ID               ,
+            DEL_FLAG                ,
+            LEAF                    ,
+            PRIORITY
+        FROM SYS_ORGANIZATION
+        <where>
+            <if test="name != null and name != ''">
+                and RESOURCE_NAME like '%' || #{name} || '%'
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+
+        </where>
+    </select>
+
+</mapper>

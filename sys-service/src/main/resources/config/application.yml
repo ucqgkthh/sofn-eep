@@ -1,0 +1,55 @@
+server:
+  port: 8881
+spring:
+  application:
+    name: sys-service
+  profiles:
+    active: dev
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+management:
+  server:
+    servlet:
+      context-path: /management
+    ssl:
+      enabled: false
+
+
+druid:
+  pool:
+    initialSize: 10
+    maxActive: 100
+    minIdle: 10
+
+
+#mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  typeAliasesPackage: com.sofn.sys.model
+  global-config:
+    id-type: 3
+    field-strategy: 2
+    auto-set-db-type: true
+    db-column-underline: true
+    refresh-mapper: true
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8880/eureka/
+
+# swagger配置
+swagger:
+  # 扫描包
+  base-package: com.sofn.sys.web
+  # 名称
+  name: 系统管理
+  # 接口前缀
+  prefix: /sys
+
+

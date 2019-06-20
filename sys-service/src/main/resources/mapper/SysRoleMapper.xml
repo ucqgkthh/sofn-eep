@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sofn.sys.mapper.SysRoleMapper" >
+
+    <resultMap id="customResultMap" type="com.sofn.sys.model.SysRole" >
+        <id column="ID" property="id" jdbcType="VARCHAR" />
+        <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+        <result column="DESCRIBE" property="describe" jdbcType="VARCHAR" />
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+        <result column="UPDATE_USER_ID" property="updateUserId" jdbcType="VARCHAR" />
+        <result column="UPDATE_TIME" property="updateTime" jdbcType="DATE" />
+        <result column="DEL_FLAG" property="delFlag" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+      ID, ROLE_NAME, DESCRIBE, CREATE_USER_ID, CREATE_TIME, UPDATE_USER_ID, UPDATE_TIME,
+      DEL_FLAG
+    </sql>
+
+    <select id="selectByPrimaryKey" resultMap="customResultMap" parameterType="java.lang.String" >
+        select
+        <include refid="Base_Column_List" />
+        from SYS_ROLE
+        where ID = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.sofn.sys.model.SysRole" >
+        insert into SYS_ROLE
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                ID,
+            </if>
+            <if test="roleName != null" >
+                ROLE_NAME,
+            </if>
+            <if test="describe != null" >
+                DESCRIBE,
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID,
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME,
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="id != null" >
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null" >
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="describe != null" >
+                #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateUserId != null" >
+                #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="com.sofn.sys.model.SysRole" >
+        update SYS_ROLE
+        <set >
+            <if test="roleName != null" >
+                ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="describe != null" >
+                DESCRIBE = #{describe,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null" >
+                CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=DATE},
+            </if>
+            <if test="updateUserId != null" >
+                UPDATE_USER_ID = #{updateUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null" >
+                UPDATE_TIME = #{updateTime,jdbcType=DATE},
+            </if>
+            <if test="delFlag != null" >
+                DEL_FLAG = #{delFlag,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="getSysRoleByCondition" parameterType="java.util.Map" resultMap="customResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM SYS_ROLE
+        <where>
+            <if test="roleName != null and roleName != ''">
+                and ROLE_NAME like '%' || #{roleName} || '%'
+            </if>
+            <if test="describe != null and describe != ''">
+                and DESCRIBE like '%' || #{describe} || '%'
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                and DEL_FLAG= #{delFlag}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectRolesByUserId" resultMap="customResultMap">
+        SELECT
+            r.*
+        FROM SYS_ROLE r
+        LEFT JOIN SYS_USER_ROLE ur ON ur.ROLE_ID = r.ID
+        WHERE ur.USER_ID = #{userId}
+  </select>
+
+    <select id="getSysRoleByName" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(1) from SYS_ROLE a where 1 =1
+        <if test="roleName != null and roleName != ''">
+            and ROLE_NAME = #{roleName}
+        </if>
+        <if test="id != null and id != ''">
+            and ID != #{id}
+        </if>
+    </select>
+</mapper>
